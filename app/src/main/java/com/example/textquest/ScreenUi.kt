@@ -18,8 +18,9 @@ class ScreenUi(
     private val spannableString = SpannableString(fullText)
 
     fun showActionButtons(context: Context, linearLayout: LinearLayout) {
+        linearLayout.removeAllViews()
         for (action in actions) {
-            action.setActionButtons1(context, linearLayout)
+            action.setActionButtons(context, linearLayout)
         }
     }
 
@@ -34,25 +35,11 @@ class ActionUi(
     val actionCallback: ActionCallback,
     val actionId: String,
     val actionText: String,
-    val actionButtonsSetter: ActionButtonsSetter
+    private val actionButtonsSetter: ActionButtonsSetter
 ) {
 
-    fun setActionButtons1(context: Context, linearLayout: LinearLayout) {
+    fun setActionButtons(context: Context, linearLayout: LinearLayout) {
         actionButtonsSetter.setActionButtons(context, linearLayout, this)
-    }
-
-    fun setActionButtons(layout: LinearLayout, context: Context) {
-        val actionButton = Button(context).apply {
-            text = actionText
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setOnClickListener {
-                actionCallback.moveToScreen(actionId)
-            }
-        }
-        layout.addView(actionButton)
     }
 
     /*
