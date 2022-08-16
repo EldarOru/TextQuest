@@ -18,15 +18,16 @@ class MainActivity : AppCompatActivity(), ActionCallback {
         actionLayout = findViewById(R.id.action_layout)
         viewModel = MainViewModel(Repository.Base(
             this,
-            applicationContext,
-            actionLayout,
             ReadRawResource.Base(context = applicationContext),
             Gson(),
 
         ))
 
         viewModel.liveData.observe(this) {
-            it.show(textView)
+            it.apply {
+                show(textView)
+                showActionButtons(context = baseContext, linearLayout = actionLayout)
+            }
         }
 
         viewModel.nextScreen("1")

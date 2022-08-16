@@ -12,16 +12,14 @@ import android.widget.TextView
 
 class ScreenUi(
     fullText: String,
-    actions: List<ActionUi>,
-    context: Context,
-    scrollView: LinearLayout
+    private val actions: List<ActionUi>
 ) {
 
     private val spannableString = SpannableString(fullText)
 
-    init {
+    fun showActionButtons(context: Context, linearLayout: LinearLayout) {
         for (action in actions) {
-            action.setActionButtons(context = context, layout = scrollView)
+            action.setActionButtons1(context, linearLayout)
         }
     }
 
@@ -33,10 +31,15 @@ class ScreenUi(
 }
 
 class ActionUi(
-    private val actionCallback: ActionCallback,
-    private val actionId: String,
-    private val actionText: String
+    val actionCallback: ActionCallback,
+    val actionId: String,
+    val actionText: String,
+    val actionButtonsSetter: ActionButtonsSetter
 ) {
+
+    fun setActionButtons1(context: Context, linearLayout: LinearLayout) {
+        actionButtonsSetter.setActionButtons(context, linearLayout, this)
+    }
 
     fun setActionButtons(layout: LinearLayout, context: Context) {
         val actionButton = Button(context).apply {
@@ -51,6 +54,7 @@ class ActionUi(
         }
         layout.addView(actionButton)
     }
+
     /*
     fun setSpan(spannableString: SpannableString, fullText: String) {
         val clickableSpan = object : ClickableSpan() {
@@ -73,6 +77,22 @@ class ActionUi(
     }
 
      */
+}
+
+fun LinearLayout.addActionButtons(actionUiList: List<ActionUi>) {
+    for (action in actionUiList) {
+        val actionButton = Button(context).apply {
+            text = action.actionText
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener {
+                action.actionCallback.moveToScreen(action.actionId)
+            }
+        }
+        this.addView(actionButton)
+    }
 }
 
 interface ActionCallback {

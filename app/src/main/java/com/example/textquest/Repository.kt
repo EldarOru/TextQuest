@@ -11,8 +11,6 @@ interface Repository {
 
     class Base(
         private val actionCallback: ActionCallback,
-        private val context: Context,
-        private val scrollView: LinearLayout,
         readRawResource: ReadRawResource,
         gson: Gson,
     ) : Repository {
@@ -27,9 +25,9 @@ interface Repository {
                 it.id == id
             }!!.let { screenData ->
                 val actions = screenData.actionsList.map { actionData ->
-                    ActionUi(actionCallback, actionData.screenId, actionData.text)
+                    ActionUi(actionCallback, actionData.screenId, actionData.text, ActionButtonsSetter.Base())
                 }
-                return ScreenUi(screenData.text, actions, context, scrollView)
+                return ScreenUi(screenData.text, actions)
             }
         }
     }
