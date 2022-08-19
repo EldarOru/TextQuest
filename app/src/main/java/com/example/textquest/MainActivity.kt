@@ -1,11 +1,9 @@
 package com.example.textquest
 
-import android.app.Application
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.google.gson.Gson
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,9 +21,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.observe(this) {
             it.apply {
                 show(textView)
-                showActionButtons(context = baseContext, actionLayout)
+                showActionButtons(context = baseContext, linearLayout = actionLayout)
             }
         }
-
     }
 }

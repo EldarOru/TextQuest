@@ -11,11 +11,10 @@ import android.widget.ScrollView
 import android.widget.TextView
 
 class ScreenUi(
-    fullText: String,
+    private val fullText: String,
     private val actions: List<ActionUi>
 ) {
 
-    private val spannableString = SpannableString(fullText)
 
     fun showActionButtons(context: Context, linearLayout: LinearLayout) {
         linearLayout.removeAllViews()
@@ -25,7 +24,7 @@ class ScreenUi(
     }
 
     fun show(textView: TextView) = textView.run {
-        text = spannableString
+        text = fullText
         movementMethod = LinkMovementMethod.getInstance()
         highlightColor = Color.TRANSPARENT
     }

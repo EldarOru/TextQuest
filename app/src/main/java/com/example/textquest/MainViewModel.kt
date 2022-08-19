@@ -1,7 +1,6 @@
 package com.example.textquest
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 
@@ -39,7 +38,12 @@ class MainViewModel(
 class ScreenDataToUi(private val actionCallback: ActionCallback) : Mapper<ScreenData, ScreenUi> {
     override fun map(data: ScreenData): ScreenUi {
         val actions = data.actionsList.map { actionData ->
-            ActionUi(actionCallback, actionData.screenId, actionData.text, ActionButtonsSetter.Base())
+            ActionUi(
+                actionCallback,
+                actionData.screenId,
+                actionData.text,
+                ActionButtonsSetter.Base()
+            )
         }
         return ScreenUi(data.text, actions)
     }
