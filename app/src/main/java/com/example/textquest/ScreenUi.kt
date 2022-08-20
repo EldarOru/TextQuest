@@ -14,6 +14,8 @@ class ScreenStory() {
     }
 
     fun getStory(): ArrayList<ScreenUi> = story.clone() as ArrayList<ScreenUi>
+
+    fun getStoryCount() = story.size - 1
 }
 
 class ScreenUi(

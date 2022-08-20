@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var actionLayout: LinearLayout
     private lateinit var mainAdapter: MainAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,18 +33,17 @@ class MainActivity : AppCompatActivity() {
 
                  */
             }
-            it.getStory()[it.getStory().size-1].showActionButtons(context = baseContext, linearLayout = actionLayout)
+            it.getStory()[it.getStoryCount()].showActionButtons(context = baseContext, linearLayout = actionLayout)
+            recyclerView.scrollToPosition(it.getStoryCount())
         }
     }
 
-
     private fun setRecyclerView() {
-        val recyclerView = findViewById<RecyclerView>(R.id.text_rv)
-        val linearLayoutManager = LinearLayoutManager(this).apply {
+        recyclerView = findViewById(R.id.text_rv)
+        recyclerView.layoutManager = LinearLayoutManager(this).apply {
             reverseLayout = false
             stackFromEnd = true
         }
-        recyclerView.layoutManager = linearLayoutManager
         mainAdapter = MainAdapter()
         recyclerView.adapter = mainAdapter
     }
