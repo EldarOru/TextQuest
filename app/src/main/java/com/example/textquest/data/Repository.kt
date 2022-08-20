@@ -1,8 +1,8 @@
-package com.example.textquest
+package com.example.textquest.data
 
 import android.content.Context
-import android.widget.LinearLayout
 import androidx.annotation.RawRes
+import com.example.textquest.R
 import com.google.gson.Gson
 
 interface Repository {

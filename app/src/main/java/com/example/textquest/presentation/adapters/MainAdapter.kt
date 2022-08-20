@@ -1,8 +1,9 @@
-package com.example.textquest
+package com.example.textquest.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.textquest.data.ScreenUi
 import com.example.textquest.databinding.QuestTextViewBinding
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.TextVH>() {

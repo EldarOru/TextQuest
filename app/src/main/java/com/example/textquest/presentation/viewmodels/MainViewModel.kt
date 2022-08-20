@@ -1,8 +1,11 @@
-package com.example.textquest
+package com.example.textquest.presentation.viewmodels
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.example.textquest.core.Communication
+import com.example.textquest.core.Mapper
+import com.example.textquest.data.*
 
 class MainViewModel(
     private val communication: Communication.Mutable<ScreenStory>,

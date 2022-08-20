@@ -1,4 +1,4 @@
-package com.example.textquest
+package com.example.textquest.data
 
 import android.content.Context
 import android.widget.Button

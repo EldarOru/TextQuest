@@ -1,4 +1,4 @@
-package com.example.textquest
+package com.example.textquest.core
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

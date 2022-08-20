@@ -1,6 +1,10 @@
 package com.example.textquest
 
 import android.app.Application
+import com.example.textquest.core.Communication
+import com.example.textquest.data.ReadRawResource
+import com.example.textquest.data.Repository
+import com.example.textquest.presentation.viewmodels.MainViewModel
 import com.google.gson.Gson
 
 class App : Application(), ProvideViewModel {
