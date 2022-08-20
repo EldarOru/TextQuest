@@ -2,19 +2,26 @@ package com.example.textquest
 
 import android.content.Context
 import android.graphics.Color
-import android.text.Layout
-import android.text.SpannableString
 import android.text.method.LinkMovementMethod
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
+
+class ScreenStory() {
+
+    private val story = ArrayList<ScreenUi>()
+    fun addScreenUi(screenUi: ScreenUi) {
+        story.add(screenUi)
+    }
+
+    fun getStory(): ArrayList<ScreenUi> = story.clone() as ArrayList<ScreenUi>
+}
 
 class ScreenUi(
     private val fullText: String,
     private val actions: List<ActionUi>
 ) {
 
+    fun getFullText() = fullText
 
     fun showActionButtons(context: Context, linearLayout: LinearLayout) {
         linearLayout.removeAllViews()
@@ -63,22 +70,6 @@ class ActionUi(
     }
 
      */
-}
-
-fun LinearLayout.addActionButtons(actionUiList: List<ActionUi>) {
-    for (action in actionUiList) {
-        val actionButton = Button(context).apply {
-            text = action.actionText
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            setOnClickListener {
-                action.actionCallback.moveToScreen(action.actionId)
-            }
-        }
-        this.addView(actionButton)
-    }
 }
 
 interface ActionCallback {

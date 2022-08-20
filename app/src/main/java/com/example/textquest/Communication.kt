@@ -6,22 +6,22 @@ import androidx.lifecycle.Observer
 
 interface Communication {
 
-    interface Observe {
-        fun observe(owner: LifecycleOwner, observer: Observer<ScreenUi>)
+    interface Observe<A: Any> {
+        fun observe(owner: LifecycleOwner, observer: Observer<A>)
     }
 
-    interface SetValue : Mapper<ScreenUi, Unit>
+    interface SetValue<A: Any> : Mapper<A, Unit>
 
-    interface Mutable : Observe, SetValue
+    interface Mutable<A: Any> : Observe<A>, SetValue<A>
 
-    class Base : Mutable {
-        private val liveData = MutableLiveData<ScreenUi>()
+    class Base<A: Any> : Mutable<A> {
+        private val liveData = MutableLiveData<A>()
 
-        override fun map(data: ScreenUi) {
+        override fun map(data: A) {
             liveData.value = data
         }
 
-        override fun observe(owner: LifecycleOwner, observer: Observer<ScreenUi>) =
+        override fun observe(owner: LifecycleOwner, observer: Observer<A>) =
             liveData.observe(owner, observer)
     }
 }

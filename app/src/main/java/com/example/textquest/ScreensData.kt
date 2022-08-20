@@ -2,10 +2,6 @@ package com.example.textquest
 
 import com.google.gson.annotations.SerializedName
 
-class ScreensHistory(
-    val screensData: List<ScreenData>
-)
-
 class ScreensData(
     @SerializedName("screens")
     val screensList: List<ScreenData>

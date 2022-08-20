@@ -5,11 +5,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 
 class MainViewModel(
-    private val communication: Communication.Mutable,
+    private val communication: Communication.Mutable<ScreenStory>,
     private val repository: Repository
-) : ViewModel(), Communication.Observe, ActionCallback {
+) : ViewModel(), Communication.Observe<ScreenStory>, ActionCallback {
 
     private val mapper = ScreenDataToUi(this)
+    private val screenStory = ScreenStory()
 
     init {
         moveToScreen("1")
@@ -18,10 +19,11 @@ class MainViewModel(
     override fun moveToScreen(id: String) {
         val screenData = repository.nextScreen(id)
         val screenUi = mapper.map(screenData)
-        communication.map(screenUi)
+        screenStory.addScreenUi(screenUi)
+        communication.map(screenStory)
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<ScreenUi>) =
+    override fun observe(owner: LifecycleOwner, observer: Observer<ScreenStory>) =
         communication.observe(owner, observer)
 
     /*
@@ -31,7 +33,6 @@ class MainViewModel(
         val screenUi = repository.nextScreen(id)
         liveData.value = screenUi
     }
-
      */
 }
 

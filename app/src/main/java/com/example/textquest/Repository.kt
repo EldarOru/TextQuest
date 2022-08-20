@@ -22,7 +22,7 @@ interface Repository {
         override fun nextScreen(id: String): ScreenData {
             return screensData.screensList.find {
                 it.id == id
-            }!!
+            } ?: ScreenData("-1", "Error", listOf())
         }
     }
 }
