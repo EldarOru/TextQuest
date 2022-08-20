@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Android/TextQuest/app/src/main/res/layout/action_buttons_list.xml" value="0.11458333333333333" />
         <entry key="..\:/Projects/Android/TextQuest/app/src/main/res/layout/activity_main.xml" value="0.16260162601626016" />
+        <entry key="..\:/Projects/Android/TextQuest/app/src/main/res/layout/quest_text_view.xml" value="0.19166666666666668" />
+        <entry key="..\:/Projects/Android/TextQuest/app/src/main/res/layout/text_list.xml" value="0.115625" />
       </map>
     </option>
   </component>
