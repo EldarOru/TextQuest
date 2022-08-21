@@ -11,12 +11,17 @@ class TypeTextView(context: Context, attributeSet: AttributeSet) :
 
     private var mText: CharSequence? = null
     private var mIndex = 0
-    private val mDelay: Long = 150
+    private val mDelay: Long = 50
 
     private val mHandler = Handler(Looper.getMainLooper())
 
-    private val characterAdder = Runnable {
-        text = mText?.subSequence(0, mIndex++)
+    private val characterAdder = object : Runnable {
+        override fun run() {
+            text = mText?.subSequence(0, mIndex++)
+            if (mIndex <= mText!!.length) {
+                mHandler.postDelayed(this, mDelay)
+            }
+        }
     }
 
     fun animateText(txt: CharSequence) {

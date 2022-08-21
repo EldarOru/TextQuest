@@ -28,15 +28,6 @@ class MainViewModel(
 
     override fun observe(owner: LifecycleOwner, observer: Observer<ScreenStory>) =
         communication.observe(owner, observer)
-
-    /*
-    val liveData = MutableLiveData<ScreenUi>()
-
-    fun nextScreen(id: String) {
-        val screenUi = repository.nextScreen(id)
-        liveData.value = screenUi
-    }
-     */
 }
 
 class ScreenDataToUi(private val actionCallback: ActionCallback) : Mapper<ScreenData, ScreenUi> {

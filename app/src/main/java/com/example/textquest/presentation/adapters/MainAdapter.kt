@@ -1,5 +1,6 @@
 package com.example.textquest.presentation.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
             is TypeTextVH -> {
-                holder.questTypeTextView.typeMainTv.text = (list[position].getFullText())
+                holder.questTypeTextView.typeMainTv.animateText(list[position].getFullText())
             }
             is TextVH -> {
                 holder.questTextView.mainTv.text = list[position].getFullText()
