@@ -1,40 +1,19 @@
 package com.example.textquest
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.TextView
-import com.google.gson.Gson
+import androidx.appcompat.app.AppCompatActivity
+import com.example.textquest.presentation.fragments.ActionButtonsListFragment
+import com.example.textquest.presentation.fragments.TextListFragment
 
-class MainActivity : AppCompatActivity(), ActionCallback {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var actionLayout: LinearLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val textView = findViewById<TextView>(R.id.textView)
-        actionLayout = findViewById(R.id.action_layout)
-        viewModel = MainViewModel(Repository.Base(
-            this,
-            applicationContext,
-            actionLayout,
-            ReadRawResource.Base(context = applicationContext),
-            Gson(),
-
-        ))
-
-        viewModel.liveData.observe(this) {
-            it.show(textView)
-        }
-
-        viewModel.nextScreen("1")
-
-    }
-
-    override fun moveToScreen(id: String) {
-        actionLayout.removeAllViews()
-        viewModel.nextScreen(id)
+        supportFragmentManager.beginTransaction()
+            .add(R.id.main_fragment, TextListFragment())
+            .add(R.id.bottom_fragment, ActionButtonsListFragment())
+            .commit()
     }
 }

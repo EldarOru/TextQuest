@@ -1,4 +1,4 @@
-package com.example.textquest
+package com.example.textquest.data
 
 import com.google.gson.annotations.SerializedName
 
