@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.textquest.data.ScreenUi
 import com.example.textquest.databinding.QuestTextViewBinding
 import com.example.textquest.databinding.QuestTypeTextBinding
+import com.example.textquest.presentation.customviews.TypeTextView
 import org.w3c.dom.Text
 
 class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -35,7 +36,10 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
             is TypeTextVH -> {
-                holder.questTypeTextView.typeMainTv.animateText(list[position].getFullText())
+                holder.questTypeTextView.typeMainTv.apply {
+                    animateText(list[position].getFullText())
+                    setOnClickListener { (it as TypeTextView).animateStop() }
+                }
             }
             is TextVH -> {
                 holder.questTextView.mainTv.text = list[position].getFullText()
