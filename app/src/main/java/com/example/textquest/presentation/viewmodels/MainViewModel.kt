@@ -40,6 +40,6 @@ class ScreenDataToUi(private val actionCallback: ActionCallback) : Mapper<Screen
                 ActionButtonsSetter.Base()
             )
         }
-        return ScreenUi(data.text, actions)
+        return ScreenUi(id = data.id, data.text, actions)
     }
 }

@@ -20,10 +20,16 @@ class ScreenStory() {
     fun getStoryCount() = story.size - 1
 }
 
-class ScreenUi(
+data class ScreenUi(
+    private val id: String,
     private val fullText: String,
     private val actions: List<ActionUi>
 ) {
+    fun sameId(other: ScreenUi) = this.id == other.id
+
+    fun sameScreenUi(other: ScreenUi): Boolean = this.id == other.id
+            && this.actions == other.actions
+            && this.fullText == other.fullText
 
     fun getFullText() = fullText
 

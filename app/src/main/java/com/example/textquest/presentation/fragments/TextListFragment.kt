@@ -28,9 +28,9 @@ class TextListFragment: BaseFragment<TextListBinding>() {
 
         viewModel.observe(this) {
             it.getStory().apply {
-                mainAdapter.update(this)
+                mainAdapter.submitList(this)
+                recyclerView.scrollToPosition(0)
             }
-            recyclerView.scrollToPosition(it.getStoryCount())
         }
     }
 

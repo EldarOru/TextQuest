@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 
 class TypeTextView(context: Context, attributeSet: AttributeSet) :
@@ -19,7 +20,7 @@ class TypeTextView(context: Context, attributeSet: AttributeSet) :
     private val characterAdder = object : Runnable {
         override fun run() {
             text = mText?.subSequence(0, mIndex++)
-            if (mIndex <= (mText?.length ?: 0) && isAnimate) {
+            if (mIndex < (mText?.length ?: 0) && isAnimate) {
                 mHandler.postDelayed(this, mDelay)
             } else isAnimate = false
         }
@@ -31,11 +32,11 @@ class TypeTextView(context: Context, attributeSet: AttributeSet) :
         text = mText
     }
 
-    fun animateText(txt: CharSequence) {
+    fun animateStart(txt: CharSequence) {
         mText = txt
         mIndex = 0
 
-        text = ""
+        text = " "
         isAnimate = true
         mHandler.postDelayed(characterAdder, mDelay)
     }
