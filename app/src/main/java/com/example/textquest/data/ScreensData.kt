@@ -10,6 +10,8 @@ class ScreensData(
 class ScreenData(
     @SerializedName("id")
     val id: String,
+    @SerializedName("teller")
+    val teller: String,
     @SerializedName("text")
     val text: String,
     @SerializedName("actions")

@@ -22,7 +22,9 @@ class ActionButtonsListFragment: BaseFragment<ActionButtonsListBinding>() {
         viewModel = (activity?.application as ProvideViewModel).provideViewModel()
 
         viewModel.observe(this) {
-            it.getLastStory().showActionButtons(context = requireContext(), linearLayout = actionLayout)
+            it.getLastStory().showActionButtons(
+                context = requireContext(),
+                linearLayout = actionLayout)
         }
     }
 }

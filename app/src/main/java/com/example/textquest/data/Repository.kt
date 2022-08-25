@@ -1,9 +1,11 @@
 package com.example.textquest.data
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.RawRes
 import com.example.textquest.R
 import com.google.gson.Gson
+import java.io.FileWriter
 
 interface Repository {
 
@@ -19,10 +21,19 @@ interface Repository {
             ScreensData::class.java
         )
 
+        init {
+            val player: Player = Player.Base(name = "ELDAR",
+                progress = "1",
+                items = arrayListOf(Item("1", "Hammer")))
+                //char = hashMapOf(Characteristic.Brave to 0))
+            Log.d("ELDAR", gson.toJson(player))
+        }
+
+
         override fun nextScreen(id: String): ScreenData {
             return screensData.screensList.find {
                 it.id == id
-            } ?: ScreenData("-1", "Error", listOf())
+            } ?: ScreenData("-1", "Teller", "error", listOf())
         }
     }
 }
