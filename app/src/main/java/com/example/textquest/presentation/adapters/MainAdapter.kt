@@ -2,40 +2,80 @@ package com.example.textquest.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.textquest.data.ScreenUi
-import com.example.textquest.databinding.QuestTextViewBinding
+import com.example.textquest.databinding.QuestTextBinding
+import com.example.textquest.databinding.QuestTypeTextBinding
+import com.example.textquest.presentation.customviews.TypeTextView
 
-class MainAdapter : RecyclerView.Adapter<MainAdapter.TextVH>() {
+class MainAdapter : ListAdapter<ScreenUi, RecyclerView.ViewHolder>(
+    AsyncDifferConfig.Builder(DiffCallback()).build()
+) {
 
-    private val list = mutableListOf<ScreenUi>()
-
-    fun update(newList: List<ScreenUi>) {
-        list.clear()
-        list.addAll(newList)
-
-        notifyDataSetChanged() //todo diffutilcallback
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            typeText -> TypeTextVH(
+                QuestTypeTextBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+            justText -> TextVH(
+                QuestTextBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+            else -> throw Exception()
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextVH {
-        return TextVH(QuestTextViewBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false))
-    }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is TypeTextVH -> {
+                //holder.questTypeTextView.tellerTv.text = currentList[position].getTeller()
+                holder.questTypeTextView.typeMainTv.apply {
+                    animateStart(currentList[position].getFullText())
+                    setOnClickListener { (it as TypeTextView).animateStop() }
+                }
 
-    override fun onBindViewHolder(holder: TextVH, position: Int) {
-        holder.bind(list[position].getFullText())
-    }
-
-    override fun getItemCount() = list.size
-
-
-    class TextVH(val questTextView: QuestTextViewBinding) :
-        RecyclerView.ViewHolder(questTextView.root) {
-            fun bind(string: String) {
-                questTextView.mainTv.text = string
+            }
+            is TextVH -> {
+                holder.questTextView.mainTv.text = currentList[position].getFullText()
             }
         }
+    }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (position == currentList.size - 1) {
+            typeText
+        } else justText
+    }
+
+    override fun getItemCount() = currentList.size
+
+    class TextVH(val questTextView: QuestTextBinding) :
+        RecyclerView.ViewHolder(questTextView.root)
+
+    class TypeTextVH(val questTypeTextView: QuestTypeTextBinding) :
+        RecyclerView.ViewHolder(questTypeTextView.root)
+
+    companion object {
+        const val typeText = 0
+        const val justText = 1
+    }
+
+    private class DiffCallback : DiffUtil.ItemCallback<ScreenUi>() {
+
+        override fun areItemsTheSame(oldItem: ScreenUi, newItem: ScreenUi) =
+            oldItem.sameId(newItem)
+
+        override fun areContentsTheSame(oldItem: ScreenUi, newItem: ScreenUi) =
+            oldItem.sameScreenUi(newItem)
+    }
 }

@@ -6,7 +6,7 @@ import android.text.method.LinkMovementMethod
 import android.widget.LinearLayout
 import android.widget.TextView
 
-class ScreenStory() {
+class ScreenStory {
 
     private val story = ArrayList<ScreenUi>()
     fun addScreenUi(screenUi: ScreenUi) {
@@ -15,15 +15,24 @@ class ScreenStory() {
 
     fun getStory(): ArrayList<ScreenUi> = story.clone() as ArrayList<ScreenUi>
 
-    fun getStoryCount() = story.size - 1
+    fun getLastStory() = story[story.size - 1]
 }
 
-class ScreenUi(
+data class ScreenUi(
+    private val id: String,
+    private val teller: String,
     private val fullText: String,
     private val actions: List<ActionUi>
 ) {
+    fun sameId(other: ScreenUi) = this.id == other.id
+
+    fun sameScreenUi(other: ScreenUi): Boolean = this.id == other.id
+            && this.actions == other.actions
+            && this.fullText == other.fullText
 
     fun getFullText() = fullText
+
+    fun getTeller() = teller
 
     fun showActionButtons(context: Context, linearLayout: LinearLayout) {
         linearLayout.removeAllViews()
@@ -32,11 +41,13 @@ class ScreenUi(
         }
     }
 
+    /*
     fun show(textView: TextView) = textView.run {
         text = fullText
         movementMethod = LinkMovementMethod.getInstance()
         highlightColor = Color.TRANSPARENT
     }
+     */
 }
 
 class ActionUi(
