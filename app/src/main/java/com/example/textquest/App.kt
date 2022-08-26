@@ -2,9 +2,10 @@ package com.example.textquest
 
 import android.app.Application
 import com.example.textquest.core.Communication
+import com.example.textquest.data.ReadInternalStorage
 import com.example.textquest.data.ReadRawResource
 import com.example.textquest.data.Repository
-import com.example.textquest.data.WriteInfo
+import com.example.textquest.data.WriteInternalStorage
 import com.example.textquest.presentation.viewmodels.MainViewModel
 import com.google.gson.Gson
 
@@ -18,9 +19,10 @@ class App : Application(), ProvideViewModel {
         viewModel = MainViewModel(
             Communication.Base(),
             Repository.Base(
-                ReadRawResource.Base(this),
-                Gson(),
-                WriteInfo.Base(this)
+                readRawResource = ReadRawResource.Base(this),
+                writeInternalStorage = WriteInternalStorage.Base(this),
+                readInternalStorage = ReadInternalStorage.Base(this),
+                gson =  Gson(),
             )
         )
     }

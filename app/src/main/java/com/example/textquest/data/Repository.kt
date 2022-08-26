@@ -4,19 +4,27 @@ import android.content.Context
 import android.util.Log
 import androidx.annotation.RawRes
 import com.example.textquest.R
-import com.example.textquest.data.WriteInfo.Companion.FILE_NAME
+import com.example.textquest.data.WriteInternalStorage.Companion.FILE_NAME
 import com.google.gson.Gson
 import java.io.File
+import java.io.FileReader
 import java.io.FileWriter
 
 interface Repository {
 
     fun nextScreen(id: String): ScreenData
 
+    fun getUserJson(fileName: String): FileCondition
+
+    fun createPlayer(jsonPlayer: String): Player
+
+    fun savePlayer(playerJson: String)
+
     class Base(
         readRawResource: ReadRawResource,
-        gson: Gson,
-        writeInfo: WriteInfo
+        private val gson: Gson,
+        private val writeInternalStorage: WriteInternalStorage,
+        private val readInternalStorage: ReadInternalStorage
     ) : Repository {
 
         private val screensData: ScreensData = gson.fromJson(
@@ -24,11 +32,16 @@ interface Repository {
             ScreensData::class.java
         )
 
-        init {
-            val player: Player = Player.Base(name = "ELDAR",
-                progress = "1",
-                items = arrayListOf(Item("1", "Hammer")))
-            writeInfo.write(writeInfo.makeFile(FILE_NAME), gson.toJson(player))
+        override fun getUserJson(fileName: String): FileCondition {
+            return readInternalStorage.read(fileName)
+        }
+
+        override fun createPlayer(jsonPlayer: String): Player {
+            return gson.fromJson(jsonPlayer, Player.Base::class.java)
+        }
+
+        override fun savePlayer(playerJson: String) {
+            writeInternalStorage.write(FILE_NAME, playerJson)
         }
 
         override fun nextScreen(id: String): ScreenData {
@@ -49,20 +62,37 @@ interface ReadRawResource {
     }
 }
 
-interface WriteInfo {
+interface ReadInternalStorage {
 
-    fun makeFile(fileName: String) : File
+    fun read(fileName: String): FileCondition
 
-    fun write(fileName: File, text: String)
-
-    class Base(private val context: Context) : WriteInfo {
-
-        override fun makeFile(fileName: String) = File(context.filesDir, fileName)
-
-        override fun write(fileName: File, text: String) {
-            if (!fileName.exists()) {
-                fileName.createNewFile()
+    class Base(private val context: Context) : ReadInternalStorage {
+        override fun read(fileName: String): FileCondition {
+            val file = File(context.filesDir, fileName)
+            if (!file.exists()) {
+                file.createNewFile()
+                return FileCondition.Fail
             }
+            val fileReader = FileReader(file)
+            val info = fileReader.readText()
+            fileReader.close()
+            return FileCondition.Success(info)
+        }
+    }
+}
+
+interface WriteInternalStorage {
+
+    fun write(fileName: String, text: String)
+
+    class Base(private val context: Context) : WriteInternalStorage {
+
+        override fun write(fileName: String, text: String) {
+            val file = File(context.filesDir, fileName)
+            if (!file.exists()) {
+                file.createNewFile()
+            }
+
             FileWriter(fileName).apply {
                 append(text)
                 flush()

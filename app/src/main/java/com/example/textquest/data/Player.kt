@@ -6,19 +6,19 @@ interface Player {
 
     fun getItem(item: Item)
 
-    class Base(
+    data class Base(
         @SerializedName("playerName")
         private val name: String,
         @SerializedName("items")
-        private val items: ArrayList<Item>,
+        private val items: ArrayList<Item>?,
         @SerializedName("progress")
-        private val progress: String,
+        private val progress: String?,
         //@SerializedName("characteristic")
         //private val char: HashMap<Characteristic, Int>
     ): Player {
 
         override fun getItem(item: Item) {
-            items.add(item)
+            items?.add(item)
         }
     }
 }
