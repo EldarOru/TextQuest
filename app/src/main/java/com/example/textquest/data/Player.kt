@@ -6,6 +6,8 @@ interface Player {
 
     fun getItem(item: Item)
 
+    fun returnProgress(): String?
+
     data class Base(
         @SerializedName("playerName")
         private val name: String,
@@ -20,6 +22,8 @@ interface Player {
         override fun getItem(item: Item) {
             items?.add(item)
         }
+
+        override fun returnProgress() = progress
     }
 }
 

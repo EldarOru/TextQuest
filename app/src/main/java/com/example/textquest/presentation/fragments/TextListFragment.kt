@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.textquest.presentation.adapters.MainAdapter
 import com.example.textquest.presentation.viewmodels.MainViewModel
 import com.example.textquest.ProvideViewModel
+import com.example.textquest.data.FileCondition
+import com.example.textquest.data.WriteInternalStorage
 import com.example.textquest.databinding.TextListBinding
 import com.example.textquest.presentation.customviews.AlertDialogName
 
@@ -28,7 +30,7 @@ class TextListFragment: BaseFragment<TextListBinding>() {
 
         viewModel = (activity?.application as ProvideViewModel).provideViewModel()
 
-        setAlertDialog()
+        getInfo()
 
         viewModel.observe(this) {
             it.getStory().apply {
@@ -52,5 +54,12 @@ class TextListFragment: BaseFragment<TextListBinding>() {
         //TODO CHANGE
         val alertDialog = AlertDialogName(viewModel)
         alertDialog.show(requireActivity().supportFragmentManager, "name")
+    }
+
+    private fun getInfo() {
+        when (val res = viewModel.getPlayer()) {
+            is FileCondition.Success -> viewModel.setPlayer(res.string)
+            is FileCondition.Fail -> setAlertDialog()
+        }
     }
 }

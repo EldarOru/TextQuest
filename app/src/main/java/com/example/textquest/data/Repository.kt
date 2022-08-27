@@ -13,11 +13,14 @@ interface Repository {
 
     fun nextScreen(id: String): ScreenData
 
-    fun getUserJson(fileName: String): FileCondition
+    //TODO CHANGE
+    fun getPlayerJsonFromFile(fileName: String): FileCondition
 
-    fun createPlayer(playerJson: String): Player
+    fun createPlayerFromJson(playerJson: String): Player
 
-    fun savePlayer(playerJson: String)
+    fun createJsonFromPlayer(player: Player): String
+
+    fun savePlayerJsonToFile(playerJson: String)
 
     class Base(
         readRawResource: ReadRawResource,
@@ -31,15 +34,19 @@ interface Repository {
             ScreensData::class.java
         )
 
-        override fun getUserJson(fileName: String): FileCondition {
+        override fun getPlayerJsonFromFile(fileName: String): FileCondition {
             return readInternalStorage.read(fileName)
         }
 
-        override fun createPlayer(playerJson: String): Player {
+        override fun createPlayerFromJson(playerJson: String): Player {
             return gson.fromJson(playerJson, Player.Base::class.java)
         }
 
-        override fun savePlayer(playerJson: String) {
+        override fun createJsonFromPlayer(player: Player): String {
+            return gson.toJson(player)
+        }
+
+        override fun savePlayerJsonToFile(playerJson: String) {
             writeInternalStorage.write(FILE_NAME, playerJson)
         }
 
@@ -69,7 +76,6 @@ interface ReadInternalStorage {
         override fun read(fileName: String): FileCondition {
             val file = File(context.filesDir, fileName)
             if (!file.exists()) {
-                file.createNewFile()
                 return FileCondition.Fail
             }
             val fileReader = FileReader(file)
@@ -91,8 +97,7 @@ interface WriteInternalStorage {
             if (!file.exists()) {
                 file.createNewFile()
             }
-
-            FileWriter(fileName).apply {
+            FileWriter(file).apply {
                 append(text)
                 flush()
                 close()

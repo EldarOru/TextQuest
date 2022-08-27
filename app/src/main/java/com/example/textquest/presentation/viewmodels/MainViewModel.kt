@@ -1,6 +1,5 @@
 package com.example.textquest.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -10,50 +9,40 @@ import com.example.textquest.data.*
 import com.example.textquest.data.WriteInternalStorage.Companion.FILE_NAME
 
 class MainViewModel(
-    private val communication: Communication.Mutable<ScreenStory>,
+    private val communication: Communication.Mutable<MainGameInformation>,
     private val repository: Repository
-) : ViewModel(), Communication.Observe<ScreenStory>, ActionCallback, DialogInteract {
+) : ViewModel(), Communication.Observe<MainGameInformation>, ActionCallback, DialogInteract {
 
     private val mapper = ScreenDataToUi(this)
-    private val screenStory = ScreenStory()
-    private var player: Player? = null
-
-    init {
-        //getPlayer()
-        moveToScreen("1")
-    }
+    private val mainGameInformation = MainGameInformation()
 
     override fun moveToScreen(id: String) {
         val screenData = repository.nextScreen(id)
         val screenUi = mapper.map(screenData)
-        screenStory.addScreenUi(screenUi)
-        communication.map(screenStory)
+        mainGameInformation.addScreenUi(screenUi)
+        communication.map(mainGameInformation)
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<ScreenStory>) =
+    override fun observe(owner: LifecycleOwner, observer: Observer<MainGameInformation>) =
         communication.observe(owner, observer)
 
-    private fun getPlayer() {
-        when (val res = repository.getUserJson(FILE_NAME)) {
-            is FileCondition.Success -> player = repository.createPlayer(res.string)
-            is FileCondition.Fail -> TODO() //createPlayer()
-        }
+    fun getPlayer() = repository.getPlayerJsonFromFile(FILE_NAME)
+
+    fun setPlayer(info: String) {
+        mainGameInformation.setPlayer(repository.createPlayerFromJson(info))
+        moveToScreen(mainGameInformation.getPlayer()?.returnProgress() ?: "1")
     }
 
     override fun onDialogInteract(string: String) {
-        Log.d("ELDAR", string)
+        repository.savePlayerJsonToFile(
+            repository.createJsonFromPlayer(
+                Player.Base(name = string, null, "1")))
     }
-
-    /*
-    fun createPlayer() {
-
-    }
-     */
-
 }
 
 //actionCallback is a ViewModel with implementation of ActionCallback
 class ScreenDataToUi(private val actionCallback: ActionCallback) : Mapper<ScreenData, ScreenUi> {
+
     override fun map(data: ScreenData): ScreenUi {
         val actions = data.actionsList.map { actionData ->
             ActionUi(
