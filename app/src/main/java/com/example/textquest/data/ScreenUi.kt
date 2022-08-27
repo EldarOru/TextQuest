@@ -1,10 +1,7 @@
 package com.example.textquest.data
 
 import android.content.Context
-import android.graphics.Color
-import android.text.method.LinkMovementMethod
 import android.widget.LinearLayout
-import android.widget.TextView
 
 class ScreenStory {
 

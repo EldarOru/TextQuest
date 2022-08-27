@@ -10,22 +10,26 @@ interface ActionButtonsSetter {
 
     fun setActionButtons(context: Context, linearLayout: LinearLayout, action: ActionUi)
 
-    class Base: ActionButtonsSetter {
+    class Base : ActionButtonsSetter {
 
         //TODO RecyclerView instead of linearlayout
-        override fun setActionButtons(context: Context, linearLayout: LinearLayout, action: ActionUi) {
-                val actionButton = Button(context).apply {
-                    text = action.actionText
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    background = AppCompatResources.getDrawable(context, R.drawable.rounded_button)
-                    setOnClickListener {
-                        action.actionCallback.moveToScreen(action.actionId)
-                    }
+        override fun setActionButtons(
+            context: Context,
+            linearLayout: LinearLayout,
+            action: ActionUi
+        ) {
+            val actionButton = Button(context).apply {
+                text = action.actionText
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                background = AppCompatResources.getDrawable(context, R.drawable.rounded_button)
+                setOnClickListener {
+                    action.actionCallback.moveToScreen(action.actionId)
                 }
-                linearLayout.addView(actionButton)
+            }
+            linearLayout.addView(actionButton)
         }
     }
 }

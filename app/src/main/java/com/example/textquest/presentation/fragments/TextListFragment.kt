@@ -10,6 +10,7 @@ import com.example.textquest.presentation.adapters.MainAdapter
 import com.example.textquest.presentation.viewmodels.MainViewModel
 import com.example.textquest.ProvideViewModel
 import com.example.textquest.databinding.TextListBinding
+import com.example.textquest.presentation.customviews.AlertDialogName
 
 class TextListFragment: BaseFragment<TextListBinding>() {
 
@@ -24,7 +25,10 @@ class TextListFragment: BaseFragment<TextListBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         setRecyclerView()
+
         viewModel = (activity?.application as ProvideViewModel).provideViewModel()
+
+        setAlertDialog()
 
         viewModel.observe(this) {
             it.getStory().apply {
@@ -42,5 +46,11 @@ class TextListFragment: BaseFragment<TextListBinding>() {
         }
         mainAdapter = MainAdapter()
         recyclerView.adapter = mainAdapter
+    }
+
+    private fun setAlertDialog() {
+        //TODO CHANGE
+        val alertDialog = AlertDialogName(viewModel)
+        alertDialog.show(requireActivity().supportFragmentManager, "name")
     }
 }

@@ -1,5 +1,6 @@
 package com.example.textquest.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,7 @@ import com.example.textquest.data.WriteInternalStorage.Companion.FILE_NAME
 class MainViewModel(
     private val communication: Communication.Mutable<ScreenStory>,
     private val repository: Repository
-) : ViewModel(), Communication.Observe<ScreenStory>, ActionCallback {
+) : ViewModel(), Communication.Observe<ScreenStory>, ActionCallback, DialogInteract {
 
     private val mapper = ScreenDataToUi(this)
     private val screenStory = ScreenStory()
@@ -33,15 +34,21 @@ class MainViewModel(
         communication.observe(owner, observer)
 
     private fun getPlayer() {
-        when(val res = repository.getUserJson(FILE_NAME)) {
+        when (val res = repository.getUserJson(FILE_NAME)) {
             is FileCondition.Success -> player = repository.createPlayer(res.string)
-            is FileCondition.Fail -> createPlayer()
+            is FileCondition.Fail -> TODO() //createPlayer()
         }
     }
 
+    override fun onDialogInteract(string: String) {
+        Log.d("ELDAR", string)
+    }
+
+    /*
     fun createPlayer() {
 
     }
+     */
 
 }
 
@@ -58,4 +65,9 @@ class ScreenDataToUi(private val actionCallback: ActionCallback) : Mapper<Screen
         }
         return ScreenUi(id = data.id, fullText = data.text, teller = data.teller, actions = actions)
     }
+}
+
+interface DialogInteract {
+
+    fun onDialogInteract(string: String)
 }

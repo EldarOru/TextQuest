@@ -17,14 +17,14 @@ class MainAdapter : ListAdapter<ScreenUi, RecyclerView.ViewHolder>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            typeText -> TypeTextVH(
+            TYPE_TEXT_VIEW -> TypeTextVH(
                 QuestTypeTextBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            justText -> TextVH(
+            JUST_TEXT_VIEW -> TextVH(
                 QuestTextBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -53,8 +53,8 @@ class MainAdapter : ListAdapter<ScreenUi, RecyclerView.ViewHolder>(
 
     override fun getItemViewType(position: Int): Int {
         return if (position == currentList.size - 1) {
-            typeText
-        } else justText
+            TYPE_TEXT_VIEW
+        } else JUST_TEXT_VIEW
     }
 
     override fun getItemCount() = currentList.size
@@ -66,8 +66,8 @@ class MainAdapter : ListAdapter<ScreenUi, RecyclerView.ViewHolder>(
         RecyclerView.ViewHolder(questTypeTextView.root)
 
     companion object {
-        const val typeText = 0
-        const val justText = 1
+        const val TYPE_TEXT_VIEW = 0
+        const val JUST_TEXT_VIEW = 1
     }
 
     private class DiffCallback : DiffUtil.ItemCallback<ScreenUi>() {

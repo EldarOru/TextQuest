@@ -1,7 +1,6 @@
 package com.example.textquest.data
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.RawRes
 import com.example.textquest.R
 import com.example.textquest.data.WriteInternalStorage.Companion.FILE_NAME
@@ -16,7 +15,7 @@ interface Repository {
 
     fun getUserJson(fileName: String): FileCondition
 
-    fun createPlayer(jsonPlayer: String): Player
+    fun createPlayer(playerJson: String): Player
 
     fun savePlayer(playerJson: String)
 
@@ -36,8 +35,8 @@ interface Repository {
             return readInternalStorage.read(fileName)
         }
 
-        override fun createPlayer(jsonPlayer: String): Player {
-            return gson.fromJson(jsonPlayer, Player.Base::class.java)
+        override fun createPlayer(playerJson: String): Player {
+            return gson.fromJson(playerJson, Player.Base::class.java)
         }
 
         override fun savePlayer(playerJson: String) {
