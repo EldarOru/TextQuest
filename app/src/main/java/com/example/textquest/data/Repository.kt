@@ -3,6 +3,8 @@ package com.example.textquest.data
 import android.content.Context
 import androidx.annotation.RawRes
 import com.example.textquest.R
+import com.example.textquest.core.Read
+import com.example.textquest.core.Write
 import com.example.textquest.data.WriteInternalStorage.Companion.FILE_NAME
 import com.google.gson.Gson
 import java.io.File
@@ -25,8 +27,8 @@ interface Repository {
     class Base(
         readRawResource: ReadRawResource,
         private val gson: Gson,
-        private val writeInternalStorage: WriteInternalStorage,
-        private val readInternalStorage: ReadInternalStorage
+        private val writeInternalStorage: Write<FileContainer>,
+        private val readInternalStorage: Read<String, FileCondition>
     ) : Repository {
 
         private val screensData: ScreensData = gson.fromJson(
@@ -47,7 +49,7 @@ interface Repository {
         }
 
         override fun savePlayerJsonToFile(playerJson: String) {
-            writeInternalStorage.write(FILE_NAME, playerJson)
+            writeInternalStorage.write(FileContainer(FILE_NAME, playerJson))
         }
 
         override fun nextScreen(id: String): ScreenData {
@@ -68,40 +70,32 @@ interface ReadRawResource {
     }
 }
 
-interface ReadInternalStorage {
 
-    fun read(fileName: String): FileCondition
-
-    class Base(private val context: Context) : ReadInternalStorage {
-        override fun read(fileName: String): FileCondition {
-            val file = File(context.filesDir, fileName)
-            if (!file.exists()) {
-                return FileCondition.Fail
-            }
-            val fileReader = FileReader(file)
-            val info = fileReader.readText()
-            fileReader.close()
-            return FileCondition.Success(info)
+class ReadInternalStorage(private val context: Context) : Read<String, FileCondition> {
+    override fun read(obj: String): FileCondition {
+        val file = File(context.filesDir, obj)
+        if (!file.exists()) {
+            return FileCondition.Fail
         }
+        val fileReader = FileReader(file)
+        val info = fileReader.readText()
+        fileReader.close()
+        return FileCondition.Success(info)
     }
 }
 
-interface WriteInternalStorage {
 
-    fun write(fileName: String, text: String)
+class WriteInternalStorage(private val context: Context) : Write<FileContainer> {
 
-    class Base(private val context: Context) : WriteInternalStorage {
-
-        override fun write(fileName: String, text: String) {
-            val file = File(context.filesDir, fileName)
-            if (!file.exists()) {
-                file.createNewFile()
-            }
-            FileWriter(file).apply {
-                append(text)
-                flush()
-                close()
-            }
+    override fun write(obj: FileContainer) {
+        val file = File(context.filesDir, obj.fileName)
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+        FileWriter(file).apply {
+            append(obj.info)
+            flush()
+            close()
         }
     }
 
@@ -109,3 +103,5 @@ interface WriteInternalStorage {
         const val FILE_NAME = "playerinfo.json"
     }
 }
+
+class FileContainer(val fileName: String, val info: String)

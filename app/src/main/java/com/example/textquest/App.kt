@@ -20,8 +20,8 @@ class App : Application(), ProvideViewModel {
             Communication.Base(),
             Repository.Base(
                 readRawResource = ReadRawResource.Base(this),
-                writeInternalStorage = WriteInternalStorage.Base(this),
-                readInternalStorage = ReadInternalStorage.Base(this),
+                writeInternalStorage = WriteInternalStorage(this),
+                readInternalStorage = ReadInternalStorage(this),
                 gson =  Gson(),
             )
         )
