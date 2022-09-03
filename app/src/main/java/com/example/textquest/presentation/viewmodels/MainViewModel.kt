@@ -6,31 +6,43 @@ import androidx.lifecycle.ViewModel
 import com.example.textquest.core.Communication
 import com.example.textquest.core.Mapper
 import com.example.textquest.data.*
+import com.example.textquest.data.WriteInternalStorage.Companion.FILE_NAME
 
 class MainViewModel(
-    private val communication: Communication.Mutable<ScreenStory>,
+    private val communication: Communication.Mutable<MainGameInformation>,
     private val repository: Repository
-) : ViewModel(), Communication.Observe<ScreenStory>, ActionCallback {
+) : ViewModel(), Communication.Observe<MainGameInformation>, ActionCallback, DialogInteract {
 
     private val mapper = ScreenDataToUi(this)
-    private val screenStory = ScreenStory()
-
-    init {
-        moveToScreen("1")
-    }
+    private val mainGameInformation = MainGameInformation()
 
     override fun moveToScreen(id: String) {
         val screenData = repository.nextScreen(id)
         val screenUi = mapper.map(screenData)
-        screenStory.addScreenUi(screenUi)
-        communication.map(screenStory)
+        mainGameInformation.addScreenUi(screenUi)
+        communication.map(mainGameInformation)
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<ScreenStory>) =
+    override fun observe(owner: LifecycleOwner, observer: Observer<MainGameInformation>) =
         communication.observe(owner, observer)
+
+    fun getPlayer() = repository.getPlayerJsonFromFile(FILE_NAME)
+
+    fun setPlayer(info: String) {
+        mainGameInformation.setPlayer(repository.createPlayerFromJson(info))
+        moveToScreen(mainGameInformation.getPlayer()?.returnProgress() ?: "1")
+    }
+
+    override fun onDialogInteract(string: String) {
+        repository.savePlayerJsonToFile(
+            repository.createJsonFromPlayer(
+                Player.Base(name = string, null, "1")))
+    }
 }
 
+//actionCallback is a ViewModel with implementation of ActionCallback
 class ScreenDataToUi(private val actionCallback: ActionCallback) : Mapper<ScreenData, ScreenUi> {
+
     override fun map(data: ScreenData): ScreenUi {
         val actions = data.actionsList.map { actionData ->
             ActionUi(
@@ -42,4 +54,9 @@ class ScreenDataToUi(private val actionCallback: ActionCallback) : Mapper<Screen
         }
         return ScreenUi(id = data.id, fullText = data.text, teller = data.teller, actions = actions)
     }
+}
+
+interface DialogInteract {
+
+    fun onDialogInteract(string: String)
 }

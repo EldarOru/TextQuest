@@ -1,17 +1,23 @@
 package com.example.textquest.data
 
 import android.content.Context
-import android.graphics.Color
-import android.text.method.LinkMovementMethod
 import android.widget.LinearLayout
-import android.widget.TextView
 
-class ScreenStory {
+class MainGameInformation {
+
+    private var player: Player? = null
 
     private val story = ArrayList<ScreenUi>()
+
     fun addScreenUi(screenUi: ScreenUi) {
         story.add(screenUi)
     }
+
+    fun setPlayer(givenPlayer: Player) {
+        player = givenPlayer
+    }
+
+    fun getPlayer(): Player? = player
 
     fun getStory(): ArrayList<ScreenUi> = story.clone() as ArrayList<ScreenUi>
 

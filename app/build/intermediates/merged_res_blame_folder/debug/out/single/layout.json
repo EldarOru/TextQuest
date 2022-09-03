@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-mergeDebugResources-25:\\layout\\quest_text_view.xml",
+        "source": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-main-28:\\layout\\quest_text_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-mergeDebugResources-25:\\layout\\quest_type_text.xml",
+        "source": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-main-28:\\layout\\quest_type_text.xml"
+    },
+    {
+        "merged": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-mergeDebugResources-25:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-main-28:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "com.example.textquest.app-mergeDebugResources-25:/layout/action_buttons_list.xml",
+        "source": "com.example.textquest.app-main-28:/layout/action_buttons_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-mergeDebugResources-25:\\layout\\quest_text.xml",
+        "source": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-main-28:\\layout\\quest_text.xml"
+    },
+    {
+        "merged": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-mergeDebugResources-25:\\layout\\dialog_form.xml",
+        "source": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-main-28:\\layout\\dialog_form.xml"
+    },
+    {
+        "merged": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-mergeDebugResources-25:\\layout\\action_buttons_list.xml",
+        "source": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-main-28:\\layout\\action_buttons_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-mergeDebugResources-25:\\layout\\text_list.xml",
+        "source": "C:\\Users\\macdo\\.gradle\\gradle-4.0.1\\daemon\\7.3.3\\com.example.textquest.app-main-28:\\layout\\text_list.xml"
+    }
+]

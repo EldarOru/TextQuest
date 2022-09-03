@@ -1,22 +1,34 @@
 package com.example.textquest.data
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.RawRes
 import com.example.textquest.R
-import com.example.textquest.data.WriteInfo.Companion.FILE_NAME
+import com.example.textquest.core.Read
+import com.example.textquest.core.Write
+import com.example.textquest.data.WriteInternalStorage.Companion.FILE_NAME
 import com.google.gson.Gson
 import java.io.File
+import java.io.FileReader
 import java.io.FileWriter
 
 interface Repository {
 
     fun nextScreen(id: String): ScreenData
 
+    //TODO CHANGE
+    fun getPlayerJsonFromFile(fileName: String): FileCondition
+
+    fun createPlayerFromJson(playerJson: String): Player
+
+    fun createJsonFromPlayer(player: Player): String
+
+    fun savePlayerJsonToFile(playerJson: String)
+
     class Base(
         readRawResource: ReadRawResource,
-        gson: Gson,
-        writeInfo: WriteInfo
+        private val gson: Gson,
+        private val writeInternalStorage: Write<FileContainer>,
+        private val readInternalStorage: Read<String, FileCondition>
     ) : Repository {
 
         private val screensData: ScreensData = gson.fromJson(
@@ -24,11 +36,20 @@ interface Repository {
             ScreensData::class.java
         )
 
-        init {
-            val player: Player = Player.Base(name = "ELDAR",
-                progress = "1",
-                items = arrayListOf(Item("1", "Hammer")))
-            writeInfo.write(writeInfo.makeFile(FILE_NAME), gson.toJson(player))
+        override fun getPlayerJsonFromFile(fileName: String): FileCondition {
+            return readInternalStorage.read(fileName)
+        }
+
+        override fun createPlayerFromJson(playerJson: String): Player {
+            return gson.fromJson(playerJson, Player.Base::class.java)
+        }
+
+        override fun createJsonFromPlayer(player: Player): String {
+            return gson.toJson(player)
+        }
+
+        override fun savePlayerJsonToFile(playerJson: String) {
+            writeInternalStorage.write(FileContainer(FILE_NAME, playerJson))
         }
 
         override fun nextScreen(id: String): ScreenData {
@@ -49,25 +70,32 @@ interface ReadRawResource {
     }
 }
 
-interface WriteInfo {
 
-    fun makeFile(fileName: String) : File
+class ReadInternalStorage(private val context: Context) : Read<String, FileCondition> {
+    override fun read(obj: String): FileCondition {
+        val file = File(context.filesDir, obj)
+        if (!file.exists()) {
+            return FileCondition.Fail
+        }
+        val fileReader = FileReader(file)
+        val info = fileReader.readText()
+        fileReader.close()
+        return FileCondition.Success(info)
+    }
+}
 
-    fun write(fileName: File, text: String)
 
-    class Base(private val context: Context) : WriteInfo {
+class WriteInternalStorage(private val context: Context) : Write<FileContainer> {
 
-        override fun makeFile(fileName: String) = File(context.filesDir, fileName)
-
-        override fun write(fileName: File, text: String) {
-            if (!fileName.exists()) {
-                fileName.createNewFile()
-            }
-            FileWriter(fileName).apply {
-                append(text)
-                flush()
-                close()
-            }
+    override fun write(obj: FileContainer) {
+        val file = File(context.filesDir, obj.fileName)
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+        FileWriter(file).apply {
+            append(obj.info)
+            flush()
+            close()
         }
     }
 
@@ -75,3 +103,5 @@ interface WriteInfo {
         const val FILE_NAME = "playerinfo.json"
     }
 }
+
+class FileContainer(val fileName: String, val info: String)
