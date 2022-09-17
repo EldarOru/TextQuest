@@ -1870,6 +1870,7 @@ int dimen compat_control_corner_material 0x7f06005b
 int dimen compat_notification_large_icon_max_height 0x7f06005c
 int dimen compat_notification_large_icon_max_width 0x7f06005d
 int dimen def_drawer_elevation 0x7f06005e
+int dimen default_dimen 0x7f06024c
 int dimen default_dimension 0x7f06005f
 int dimen design_appbar_elevation 0x7f060060
 int dimen design_bottom_navigation_active_item_max_width 0x7f060061
@@ -3330,6 +3331,7 @@ int string path_password_eye_mask_visible 0x7f100077
 int string path_password_strike_through 0x7f100078
 int string search_menu_title 0x7f100079
 int string status_bar_notification_info_overflow 0x7f10007a
+int style ActionButton 0x7f110420
 int style AlertDialog_AppCompat 0x7f110000
 int style AlertDialog_AppCompat_Light 0x7f110001
 int style AndroidThemeColorAccentYellow 0x7f110002

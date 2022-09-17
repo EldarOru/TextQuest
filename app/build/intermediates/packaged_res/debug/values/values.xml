@@ -8,11 +8,18 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="white">#FFFFFFFF</color>
+    <dimen name="default_dimen">8dp</dimen>
     <string name="app_name">TextQuest</string>
+    <style name="ActionButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_margin">@dimen/default_dimen</item>
+        <item name="background">@drawable/rounded_button</item>
+    </style>
     <style name="StoryText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/grey</item>
         <item name="android:textSize">25sp</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_margin">@dimen/default_dimen</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>

@@ -18,13 +18,9 @@ interface ActionButtonsSetter {
             linearLayout: LinearLayout,
             action: ActionUi
         ) {
-            val actionButton = Button(context).apply {
+            val actionButton = Button(context, null, 0, R.style.ActionButton).apply {
                 text = action.actionText
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                background = AppCompatResources.getDrawable(context, R.drawable.rounded_button)
+
                 setOnClickListener {
                     action.actionCallback.moveToScreen(action.actionId)
                 }
